@@ -19,6 +19,9 @@ class TreeCell(EmptyCell):
     def activate(self):
         pass
 
+    def is_active(self):
+        return True
+
     def check(self):
         return True
 
