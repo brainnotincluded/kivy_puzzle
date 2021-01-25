@@ -1,4 +1,5 @@
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.button import Button
 from kivy.uix.pagelayout import PageLayout
@@ -26,9 +27,10 @@ class PuzzleGame(PageLayout):
         self._init_game()
 
 
-
 class PuzzleApp(App):
+
     def build(self):
+        # Window.size = (300, 550)
         return PuzzleGame()
 
 
