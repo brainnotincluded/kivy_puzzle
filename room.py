@@ -77,7 +77,7 @@ class LampRoom(Room):
     клеткой. В черной клетке может находиться число от 0 до 4, указывая, 
     сколько фонарей должно быть размещено рядом с ней (не учитываются 
     фонари, помещенные по диагонали от этой черной клетки).
-        """.split(sep='\n')
+        """
 
     def checks(self):
         pprint_room(self.r)
@@ -122,7 +122,7 @@ class CampRoom(Room):
  к "чужим" деревьям значения не имеет.
  Числа сбоку и сверху означают,
  сколько палаток находится в этой строке или столбце.
-        """.split(sep='\n')
+        """
 
     def checks(self):
         pprint_room(self.r)
@@ -170,8 +170,7 @@ class KnightsRoom(Room):
 формате: 1 – рыцарь 0 – лжец. 
 Последний спрошенный человек отвечал 
 на вопрос о первом.
-        """.split(sep='\n')
-
+        """
     def checks(self):
         tf = []
         for i in self.r[3]:
@@ -184,7 +183,7 @@ class KnightsRoom(Room):
 
 class SwitchRoom(Room):
     def say(self):
-        return ['Сделай, всё синим!']
+        return 'Сделай, всё синим!'
 
     def _generate(self):
         return self._generate3x3()

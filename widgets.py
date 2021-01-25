@@ -1,5 +1,6 @@
 import random
 
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.uix.button import Button
@@ -7,6 +8,21 @@ from kivy.uix.gridlayout import GridLayout
 
 from cell import ManCell, TentCell, EmptyCell, TreeCell, PrintCell, LampCell, SwitchCell
 from room import SwitchRoom, KnightsRoom, CampRoom, LampRoom
+
+
+class Win(AnchorLayout):
+    def __init__(self, game, to_remoove, **kwargs):
+        super().__init__(**kwargs)
+        self.game = game
+        for i in range(len(to_remoove)):
+            self.game.remove_widget(to_remoove[i])
+        self.add_widget(Button(text='Congratulation! More?', on_press=self.on_press))
+
+    def on_press(self, x):
+        self.game.remove_widget(self)
+        self.game._init_game()
+
+
 
 
 class Cell(Button):
@@ -51,7 +67,7 @@ class TentCellV(Cell):
 
 class LampCellV(Cell):
     def __init__(self, game, ij, room, **kwargs):
-        super().__init__(game, ij, room, 'images/lamp.png', 'images/lamp1.png', **kwargs)
+        super().__init__(game, ij, room, 'images/lamp1.png', 'images/lamp.png', **kwargs)
 
 
 class SwitchCellV(Cell):
@@ -78,28 +94,28 @@ class TreeCellV(Cell):
 
 class Board(GridLayout):
     def __init__(self, game, **kwargs):
-        room = random.sample([LampRoom, SwitchRoom, KnightsRoom, CampRoom], 1)[0]()
-        self.r = room.r
+        self.room = random.sample([LampRoom, SwitchRoom, KnightsRoom, CampRoom], 1)[0]()
+        self.r = self.room.r
         super().__init__(**kwargs)
         self.cols = 7
         self.rows = 7
         for i in range(self.cols):
             for j in range(self.rows):
                 if isinstance(self.r[i][j], TreeCell):
-                    self.add_widget(TreeCellV(game, (i, j), room, **kwargs))
+                    self.add_widget(TreeCellV(game, (i, j), self.room, **kwargs))
                 elif isinstance(self.r[i][j], PrintCell):
-                    self.add_widget(PrintCellV(game, (i, j), room, **kwargs))
+                    self.add_widget(PrintCellV(game, (i, j), self.room, **kwargs))
                 elif isinstance(self.r[i][j], TentCell):
-                    self.add_widget(TentCellV(game, (i, j), room, **kwargs))
+                    self.add_widget(TentCellV(game, (i, j), self.room, **kwargs))
                 elif isinstance(self.r[i][j], LampCell):
-                    self.add_widget(LampCellV(game, (i, j), room, **kwargs))
+                    self.add_widget(LampCellV(game, (i, j), self.room, **kwargs))
                 elif isinstance(self.r[i][j], SwitchCell):
-                    self.add_widget(SwitchCellV(game, (i, j), room, **kwargs))
+                    self.add_widget(SwitchCellV(game, (i, j), self.room, **kwargs))
                 elif isinstance(self.r[i][j], ManCell):
-                    self.add_widget(KnightLiarCellV(game, (i, j), room, **kwargs))
+                    self.add_widget(KnightLiarCellV(game, (i, j), self.room, **kwargs))
                 elif isinstance(self.r[i][j], EmptyCell):
-                    self.add_widget(EmptyCellV(game, (i, j), room, **kwargs))
+                    self.add_widget(EmptyCellV(game, (i, j), self.room, **kwargs))
 
         with self.canvas.before:
-            Color(0 / 255, 0 / 255, 50 / 255, 1)
+            Color(0 / 255, 0 / 255, 75 / 255, 1)
             Rectangle(pos=(0, 0), size=(1000, 2000))

@@ -1,10 +1,9 @@
 from kivy.app import App
 from kivy.core.window import Window
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.button import Button
 from kivy.uix.pagelayout import PageLayout
 from kivy.uix.textinput import TextInput
-from widgets import Board
+from widgets import Board, Win
 
 
 class PuzzleGame(PageLayout):
@@ -14,17 +13,23 @@ class PuzzleGame(PageLayout):
 
     def _init_game(self):
         # self.board = AnchorLayout(anchor_x='center', anchor_y='center')
-        self.board = Board(self)#, size_hint=(None, None), size=(int(350), int(350)))
+        self.board = Board(self)  # , size_hint=(None, None), size=(int(350), int(350)))
         # self.board.add_widget(board)
         self.add_widget(self.board)
-        self.help = TextInput(background_color=(0,0,0,1), foreground_color=(1,0,0,1))
+        self.help = TextInput(
+            readonly=True,
+            cursor_color=(0, 0, 0, 0),
+            background_color=(0, 0, 0, 1),
+            foreground_color=(1, 0, 0, 1),
+            text=self.board.room.say())
+
         self.add_widget(self.help)
 
-    def on_win(self):
-        self.remove_widget(self.board)
-        self.remove_widget(self.help)
 
-        self._init_game()
+    def on_win(self):
+        self.add_widget(Win(self, [self.board, self.help]))
+
+
 
 
 class PuzzleApp(App):
